@@ -337,6 +337,11 @@ export async function exportJianying(
   return invoke<DraftResult>("export_jianying", { id, root, name });
 }
 
+export async function detectJianyingRoot(): Promise<string | null> {
+  if (!isTauri()) return null;
+  return invoke<string | null>("detect_jianying_root");
+}
+
 export async function openPath(path: string): Promise<void> {
   if (!isTauri()) return;
   await invoke("open_path", { path });

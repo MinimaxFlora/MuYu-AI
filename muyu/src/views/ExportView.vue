@@ -7,6 +7,7 @@ import { open } from "@tauri-apps/plugin-dialog";
 import {
   assetUrl,
   cancelRender,
+  detectJianyingRoot,
   exportItems,
   exportJianying,
   exportSrt,
@@ -35,6 +36,7 @@ const busy = ref(false);
 const result = ref<RenderResult | null>(null);
 const draft = ref<DraftResult | null>(null);
 const draftBusy = ref(false);
+const draftRoot = ref("");
 const progress = ref({ percent: 0, message: "准备中…" });
 const options = ref<RenderOptions>({
   aspect: "original",
@@ -223,21 +225,28 @@ async function exportDraft() {
     message.info("浏览器预览模式无法导出剪映草稿");
     return;
   }
-  const root = await open({
-    directory: true,
-    multiple: false,
-    title: "选择剪映草稿目录（JianyingPro 的 draft 文件夹）",
-  });
-  if (!root || typeof root !== "string") return;
+  if (!draftRoot.value) {
+    await chooseDraftRoot();
+  }
+  if (!draftRoot.value) return;
   draftBusy.value = true;
   try {
-    draft.value = await exportJianying(id, root, project.value?.name);
+    draft.value = await exportJianying(id, draftRoot.value, project.value?.name);
     message.success(`剪映草稿已生成：${draft.value.name}`);
   } catch (err) {
     message.error(`草稿导出失败：${errorText(err)}`);
   } finally {
     draftBusy.value = false;
   }
+}
+
+async function chooseDraftRoot() {
+  const root = await open({
+    directory: true,
+    multiple: false,
+    title: "选择剪映草稿目录（JianyingPro 的 draft 文件夹）",
+  });
+  if (typeof root === "string") draftRoot.value = root;
 }
 
 async function openDraftFolder() {
@@ -253,6 +262,14 @@ async function openFolder() {
 }
 
 onMounted(load);
+onMounted(async () => {
+  if (!isTauri()) return;
+  try {
+    draftRoot.value = (await detectJianyingRoot()) ?? "";
+  } catch {
+    draftRoot.value = "";
+  }
+});
 onUnmounted(() => unlisten?.());
 </script>
 
@@ -495,6 +512,11 @@ onUnmounted(() => unlisten?.());
                   </div>
                   <Icon name="download" :size="14" />
                 </button>
+              </div>
+              <div v-if="draftRoot" class="muted mono" style="margin-top: 7px; font-size: 9px; display: flex; gap: 8px; align-items: center">
+                <span>草稿目录</span>
+                <span :title="draftRoot" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 330px">{{ draftRoot }}</span>
+                <button class="btn ghost sm" style="padding: 2px 8px" @click="chooseDraftRoot">更改</button>
               </div>
 
               <div v-if="draft" class="draft-result">

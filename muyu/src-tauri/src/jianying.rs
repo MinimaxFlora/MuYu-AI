@@ -1080,6 +1080,39 @@ pub fn export_draft(project: &Project, root: &str, name: Option<String>) -> Resu
     })
 }
 
+pub fn detect_draft_root() -> Option<String> {
+    let local = std::env::var("LOCALAPPDATA").ok()?;
+    let legacy = Path::new(&local)
+        .join("JianyingPro")
+        .join("User Data")
+        .join("Projects")
+        .join("com.lveditor.draft");
+    let meta = legacy.join("root_meta_info.json");
+    if !meta.exists() {
+        return None;
+    }
+    let value: Value = serde_json::from_str(&fs::read_to_string(&meta).ok()?).ok()?;
+    let drafts = value.get("all_draft_store")?.as_array()?;
+    let mut counts: HashMap<String, usize> = HashMap::new();
+    for draft in drafts {
+        let Some(fold) = draft.get("draft_fold_path").and_then(Value::as_str) else {
+            continue;
+        };
+        let Some(parent) = Path::new(fold).parent() else {
+            continue;
+        };
+        let parent = parent.to_string_lossy().replace('\\', "/");
+        if parent.ends_with("com.lveditor.draft") || !Path::new(&parent).is_dir() {
+            continue;
+        }
+        *counts.entry(parent).or_insert(0) += 1;
+    }
+    counts
+        .into_iter()
+        .max_by_key(|(_, count)| *count)
+        .map(|(path, _)| path)
+}
+
 fn jianying_exists() -> bool {
     let mut candidates: Vec<PathBuf> = Vec::new();
 
@@ -1173,5 +1206,12 @@ mod detection_tests {
     #[ignore]
     fn detects_jianying_from_registry() {
         assert!(super::jianying_exists(), "JianyingPro should be discovered from registry/App Paths");
+    }
+
+    #[test]
+    #[ignore]
+    fn detects_configured_draft_root() {
+        let root = super::detect_draft_root().expect("draft root should be discovered");
+        assert!(std::path::Path::new(&root).join("10月25日").exists(), "root={root}");
     }
 }

@@ -663,6 +663,11 @@ pub async fn export_jianying(
 }
 
 #[tauri::command]
+pub fn detect_jianying_root() -> Option<String> {
+    crate::jianying::detect_draft_root()
+}
+
+#[tauri::command]
 pub fn open_log_dir(app: tauri::AppHandle) -> Result<String, String> {
     let dir = app
         .path()
