@@ -328,13 +328,42 @@ fn normalize_llm_items(raw: &str, project: &Project) -> Vec<ScriptItem> {
     items
 }
 
-fn plot_prompt(project: &Project) -> (String, String) {
+fn plot_prompt_with_context(project: &Project, context: &str) -> (String, String) {
     let system = "你是影视解说策划。只输出中文结构化剧情理解，不写解说词，不输出 Markdown 代码块。".to_string();
     let user = format!(
         "作品：{}\n类型：{}\n\n字幕（含时间码）：\n{}\n\n请输出：\n一句话故事：\n人物与关系：\n主线脉络（3-8 条）：\n可用钩子（2-4 条）：\n注意事项（如有）：",
         project.name,
         project.params.genre,
-        subtitle_context(project)
+        context
+    );
+    (system, user)
+}
+
+fn plot_segment_prompt(project: &Project, context: &str, index: usize, total: usize) -> (String, String) {
+    let system = "你是影视剧情分析助手。只输出这一段的剧情摘要，200 字以内，不写解说词。".to_string();
+    let user = format!(
+        "作品：{}\n这是第 {}/{} 段字幕。请提炼：本段发生了什么、人物关系变化、留下的悬念。\n\n{}",
+        project.name,
+        index + 1,
+        total,
+        context
+    );
+    (system, user)
+}
+
+fn plot_merge_prompt(project: &Project, summaries: &[String]) -> (String, String) {
+    let system = "你是影视解说策划。只输出中文结构化剧情理解，不写解说词，不输出 Markdown 代码块。".to_string();
+    let merged = summaries
+        .iter()
+        .enumerate()
+        .map(|(index, text)| format!("第 {} 段：{}", index + 1, text))
+        .collect::<Vec<_>>()
+        .join("\n\n");
+    let user = format!(
+        "作品：{}\n类型：{}\n\n分段剧情摘要：\n{}\n\n请合并成完整剧情理解，输出：\n一句话故事：\n人物与关系：\n主线脉络（3-8 条）：\n可用钩子（2-4 条）：\n注意事项（如有）：",
+        project.name,
+        project.params.genre,
+        merged
     );
     (system, user)
 }
@@ -392,12 +421,43 @@ pub async fn analyze_plot(
             Some("演示模式：未配置 API Key，剧情理解为本地规则生成。".into()),
         ));
     }
-    let (system, user) = plot_prompt(project);
+    let windows = subtitle_windows(project, ITEM_CONTEXT_CHARS);
+    if windows.len() <= 1 {
+        let (system, user) = plot_prompt_with_context(project, windows.first().map(String::as_str).unwrap_or(""));
+        return match llm::chat(settings, &system, &user, false, 3000).await {
+            Ok(text) => Ok((text.trim().to_string(), None)),
+            Err(err) => Ok((
+                demo_plot(project),
+                Some(format!("模型请求失败，已回退本地规则：{err}")),
+            )),
+        };
+    }
+
+    let mut summaries = Vec::with_capacity(windows.len());
+    for (index, context) in windows.iter().enumerate() {
+        let (system, user) = plot_segment_prompt(project, context, index, windows.len());
+        match llm::chat(settings, &system, &user, false, 1400).await {
+            Ok(text) => summaries.push(text.trim().to_string()),
+            Err(err) => {
+                return Ok((
+                    demo_plot(project),
+                    Some(format!(
+                        "长视频第 {} 段剧情分析失败，已回退本地规则：{err}",
+                        index + 1
+                    )),
+                ));
+            }
+        }
+    }
+    let (system, user) = plot_merge_prompt(project, &summaries);
     match llm::chat(settings, &system, &user, false, 3000).await {
-        Ok(text) => Ok((text.trim().to_string(), None)),
+        Ok(text) => Ok((
+            text.trim().to_string(),
+            Some(format!("长视频分段剧情分析：{} 段", windows.len())),
+        )),
         Err(err) => Ok((
-            demo_plot(project),
-            Some(format!("模型请求失败，已回退本地规则：{err}")),
+            summaries.join("\n\n"),
+            Some(format!("合并剧情摘要失败，保留分段摘要：{err}")),
         )),
     }
 }
