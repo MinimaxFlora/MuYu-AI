@@ -76,17 +76,17 @@ https://github.com/<owner>/<repo>/releases/latest/download/latest.json
 发布后资产应包含：
 
 ```
-MuYu_0.9.10_x64-setup.exe
-MuYu_0.9.10_x64-setup.exe.sig
+MuYu_0.9.11_x64-setup.exe
+MuYu_0.9.11_x64-setup.exe.sig
 latest.json
 ```
 
 ### 3.1 已发布（2026-10-25）
 
-- Release：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.10`
-- Actions run `40203753214`：成功。
+- Release：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.11`
+- Actions run `40205298553`：成功。
 - 资产：
-  - `MuYu_0.9.10_x64-setup.exe` 4,713,905 B
+  - `MuYu_0.9.11_x64-setup.exe` 4,716,379 B
   - `.sig` 436 B
   - `latest.json` 1,397 B
 - `latest.json` 已验证包含 `windows-x86_64` 和 `windows-x86_64-nsis`，两项都有签名与 GitHub 下载地址。
@@ -99,8 +99,8 @@ latest.json
 4. 打 tag：
 
 ```bash
-git tag v0.9.10
-git push origin v0.9.10
+git tag v0.9.11
+git push origin v0.9.11
 ```
 
 5. Actions 完成后，在 Release 页面确认 `latest.json` 已上传。
@@ -113,11 +113,12 @@ git push origin v0.9.10
 - **0.9.5 → 0.9.6**：检查、下载、安装无弹窗；安装后版本 0.9.6；同时完成 API Key 凭据迁移验证。
 - **0.9.6 → 0.9.8**：跨版本直接升级成功；安装后 0.9.8；注册表检测修复验证通过。
 - **0.9.8 → 0.9.9**：自动检测真实剪映草稿根目录 D:/JianyingPro Drafts；升级成功。
-- **0.9.9 → 0.9.10**：长视频分段、LLM 重试、批量选择持久化；升级成功。
+- **0.9.9 → 0.9.10**：长视频分镜分段、LLM 重试、批量选择持久化；升级成功。
+- **0.9.10 → 0.9.11**：长视频剧情分段摘要；升级成功。
 
 ## 5. 限制
 
-- 已完成 0.9.3→0.9.4、0.9.4→0.9.5、0.9.5→0.9.6、0.9.6→0.9.8、0.9.8→0.9.9、0.9.9→0.9.10 六次真实升级；尚未测试失败回滚/断网重试。
+- 已完成 0.9.3→0.9.4、0.9.4→0.9.5、0.9.5→0.9.6、0.9.6→0.9.8、0.9.8→0.9.9、0.9.9→0.9.10、0.9.10→0.9.11 七次真实升级；尚未测试失败回滚/断网重试。
 - 私钥丢失后无法签发后续更新，必须备份。
 - `latest.json` 依赖 GitHub `latest`，预发布版本不会被 `latest` 选中。
 - 未接入 Clash 那样的镜像代理与静默后台缓存；当前是手动确认 + 自动检查提醒。
