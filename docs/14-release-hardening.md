@@ -1,6 +1,6 @@
 # 发布加固：日志、开机自启、签名与更新
 
-版本：0.9.3
+版本：0.9.5
 日期：2026-10-25
 
 ---
@@ -41,7 +41,7 @@
    - `digestAlgorithm: "sha256"`
    - `timestampUrl`
 3. CI 中注入证书或使用云签名服务（Azure Trusted Signing / DigiCert）。
-4. 对 `muyu.exe` 与 `MuYu_0.9.3_x64-setup.exe` 都签名。
+4. 对 `muyu.exe` 与 `MuYu_0.9.5_x64-setup.exe` 都签名。
 
 没有证书无法完成可信签名；不能用自签名冒充正式发布。
 
