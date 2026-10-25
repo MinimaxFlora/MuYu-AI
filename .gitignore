@@ -1,0 +1,21 @@
+# Reference clone (MIT, not part of the app)
+_research/
+
+# Frontend / Rust build outputs
+muyu/node_modules/
+muyu/dist/
+muyu/src-tauri/target/
+muyu/src-tauri/gen/schemas/
+muyu/.shots/
+muyu/release/
+
+# Portable build toolchain (downloaded in CI)
+muyu/tools/
+
+# Never commit updater private key
+muyu/src-tauri/updater.key
+
+# Local OS noise
+.DS_Store
+Thumbs.db
+*.log

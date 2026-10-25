@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>幕语 · 文案工作台</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.6 12 4l8 6.6V20a1 1 0 0 1-1 1h-4.4v-6H9.4v6H5a1 1 0 0 1-1-1Z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.2l2 2h7.8A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5Z"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16.5l9 5 9-5"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.6a7.6 7.6 0 0 0 0-3.2l1.8-1.4-1.9-3.3-2.1.9a7.7 7.7 0 0 0-2.8-1.6L14 2.6h-4l-.4 2.4A7.7 7.7 0 0 0 6.8 6.6l-2.1-.9L2.8 9l1.8 1.4a7.6 7.6 0 0 0 0 3.2L2.8 15l1.9 3.3 2.1-.9c.8.7 1.8 1.3 2.8 1.6l.4 2.4h4l.4-2.4c1-.3 2-.9 2.8-1.6l2.1.9 1.9-3.3Z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6.5 10a5.5 5.5 0 0 1 11 0c0 4 1.5 5.5 1.5 5.5H5s1.5-1.5 1.5-5.5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></symbol>
+    <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M4 12h15m0 0-6-6m6 6-6 6"/></symbol>
+    <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M20 12H5m0 0 6-6m-6 6 6 6"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5 13.9 9l5.6 1.9-5.6 1.9L12 18.5l-1.9-5.7L4.5 11 10.1 9 12 3.5Z"/><path d="M18.5 16.5 19.2 18l1.6.7-1.6.6-.7 1.6-.7-1.6-1.6-.6 1.6-.7Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 6.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/></symbol>
+    <symbol id="i-scissor" viewBox="0 0 24 24"><circle cx="6.5" cy="17" r="2.5"/><circle cx="6.5" cy="7" r="2.5"/><path d="M8.6 8.5 19 18M8.6 15.5 19 6"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M5 6h14M12 6v13M8.5 19h7"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v4.5h-4.5"/></symbol>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 12h2l2-5 3 10 3-12 3 14 2-7h3"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M5 10v4h3l4 3.5v-11L8 10H5Z"/><path d="M16 9a4 4 0 0 1 0 6"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 5h11l3 3v11H5Z"/><path d="M8 5v5h7V5M8 19v-5h8v5"/></symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <aside class="rail">
+    <div class="rail-logo">幕</div>
+    <nav class="rail-nav">
+      <a class="rail-item"><svg class="i"><use href="#i-home"/></svg><span>首页</span></a>
+      <a class="rail-item active"><svg class="i"><use href="#i-folder"/></svg><span>项目</span></a>
+      <a class="rail-item"><svg class="i"><use href="#i-film"/></svg><span>素材</span></a>
+      <a class="rail-item"><svg class="i"><use href="#i-layers"/></svg><span>任务</span></a>
+    </nav>
+    <div class="rail-bottom">
+      <a class="rail-item"><svg class="i"><use href="#i-gear"/></svg><span>设置</span></a>
+      <div class="rail-avatar">林</div>
+    </div>
+  </aside>
+
+  <div class="main studio">
+    <header class="studio-top">
+      <a class="back"><svg class="i"><use href="#i-arrow-l"/></svg></a>
+      <div class="proj"><b>《雾港》第 1 集</b><span>短句解说 · 42:17 · 1080p · 已自动保存</span></div>
+      <div class="grow"></div>
+      <button class="btn ghost"><svg class="i"><use href="#i-save"/></svg>保存草稿</button>
+      <button class="btn ghost"><svg class="i"><use href="#i-play"/></svg>预览</button>
+    </header>
+
+    <div class="stepper" style="padding:0 20px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.012)">
+      <div class="step done"><span class="idx"><svg class="i" style="width:10px;height:10px"><use href="#i-check"/></svg></span>素材</div>
+      <div class="step done"><span class="idx"><svg class="i" style="width:10px;height:10px"><use href="#i-check"/></svg></span>剧情理解</div>
+      <div class="step active"><span class="idx">3</span>解说文案</div>
+      <div class="step"><span class="idx">4</span>分镜与配音</div>
+      <div class="step"><span class="idx">5</span>成片导出</div>
+      <div class="grow"></div>
+      <div class="muted mono" style="font-size:10px">自动保存 · 22:41</div>
+    </div>
+
+    <div class="script-body">
+      <!-- Left -->
+      <section class="col">
+        <div class="col-head"><b>素材与字幕</b><span class="mini">1,284</span><div class="grow"></div><svg class="i" style="width:14px;height:14px;color:var(--text-3)"><use href="#i-more"/></svg></div>
+        <div class="asset">
+          <div class="thumb poster" style="--p1:#b4762c; --p2:#3b2c6e; --p3:#0f2d3a">
+            <div class="ttl">雾港 · EP01</div>
+            <div class="dur">42:17</div>
+          </div>
+          <div class="meta">
+            <span class="chip">1080p</span><span class="chip">24fps</span><span class="chip green"><span class="dot"></span>字幕就绪</span>
+          </div>
+        </div>
+        <div class="col-head" style="height:38px;flex:0 0 38px;border-bottom:1px solid var(--line)">
+          <b style="font-size:11px;color:var(--text-2)">原始字幕</b><span class="mini">中文字幕</span><div class="grow"></div>
+          <svg class="i" style="width:13px;height:13px;color:var(--text-3)"><use href="#i-search"/></svg>
+        </div>
+        <div class="sub-list">
+          <div class="sub-row"><div class="t">00:00</div><div class="txt">海雾漫过码头，一艘没有编号的货轮靠岸。</div></div>
+          <div class="sub-row"><div class="t">00:04</div><div class="txt">值班员抬头，看见甲板上站着一个人。</div></div>
+          <div class="sub-row"><div class="t">00:09</div><div class="txt">那人没有行李，只拎着一只被海水泡过的箱子。</div></div>
+          <div class="sub-row"><div class="t">01:11</div><div class="txt">审讯室的灯管闪了两下，他抬手挡了挡光。</div></div>
+          <div class="sub-row active"><div class="t">01:17</div><div class="txt">警官把证据袋推过来，指尖在桌面上敲了三下。</div></div>
+          <div class="sub-row"><div class="t">01:23</div><div class="txt">他盯着袋子上的编号，呼吸慢了半拍。</div></div>
+          <div class="sub-row"><div class="t">01:29</div><div class="txt">门禁记录被投到屏幕上，红色的时间戳格外刺眼。</div></div>
+          <div class="sub-row"><div class="t">01:36</div><div class="txt">「十点零七分，你确定你那天在家？」</div></div>
+          <div class="sub-row"><div class="t">01:40</div><div class="txt">他没有回答，只是看向单向玻璃。</div></div>
+          <div class="sub-row"><div class="t">01:47</div><div class="txt">他抬起头，第一次没有回避那道目光。</div></div>
+        </div>
+        <div class="plot">
+          <div class="ph"><svg class="i"><use href="#i-spark"/></svg>剧情理解 · 已生成<div class="grow"></div><svg class="i" style="width:12px;height:12px;color:var(--text-3)"><use href="#i-chev-d"/></svg></div>
+          <p>第 1 集以「货轮—审讯室」双线展开：男主被卷入码头失踪案，所有证据都指向旧友。门禁记录与不在场证明互相矛盾，是本集的核心钩子。</p>
+        </div>
+      </section>
+
+      <!-- Center -->
+      <section class="col">
+        <div class="col-head">
+          <b>解说文案</b><span class="mini">38 句</span><span class="chip gold" style="margin-left:4px">短句</span>
+          <div class="grow"></div>
+          <span class="chip">逐句</span>
+          <span class="chip" style="opacity:.55">整段</span>
+          <svg class="i" style="width:14px;height:14px;color:var(--text-3);margin-left:4px"><use href="#i-more"/></svg>
+        </div>
+
+        <div class="copy-scroll">
+          <div class="copy-head">
+            <div>
+              <h3>逐句解说</h3>
+              <div class="muted" style="font-size:11px;margin-top:3px">基于 1,284 条字幕生成 · 目标 1,200 字 · 悬疑 · 冷峻</div>
+            </div>
+            <div class="grow"></div>
+            <span class="chip violet"><svg class="i" style="width:11px;height:11px"><use href="#i-spark"/></svg>AI 已润色</span>
+          </div>
+
+          <article class="quote active">
+            <div class="q-top"><span class="q-idx">01</span><span class="chip gold" style="height:18px;font-size:10px">开场钩子</span></div>
+            <div class="q-body">他以为这只是一次普通问询，可桌上的证据，却指向了他最信任的人。<span class="caret"></span></div>
+            <div class="q-meta">
+              <span class="m">31 字</span><span class="m">≈ 6.2s</span>
+              <span class="m"><svg class="i"><use href="#i-film"/></svg>01:17 – 01:23</span>
+              <span class="m" style="color:var(--green)"><span class="dot"></span>画面充足</span>
+            </div>
+            <div class="q-tools">
+              <span class="tool"><svg class="i"><use href="#i-scissor"/></svg></span>
+              <span class="tool"><svg class="i"><use href="#i-spark"/></svg></span>
+              <span class="tool"><svg class="i"><use href="#i-volume"/></svg></span>
+            </div>
+          </article>
+
+          <article class="quote">
+            <div class="q-top"><span class="q-idx">02</span></div>
+            <div class="q-body">而真正的问题，不是他撒了谎。</div>
+            <div class="q-meta"><span class="m">14 字</span><span class="m">≈ 2.8s</span><span class="m"><svg class="i"><use href="#i-film"/></svg>01:23 – 01:27</span></div>
+            <div class="q-tools"><span class="tool"><svg class="i"><use href="#i-scissor"/></svg></span><span class="tool"><svg class="i"><use href="#i-spark"/></svg></span><span class="tool"><svg class="i"><use href="#i-volume"/></svg></span></div>
+          </article>
+
+          <article class="quote">
+            <div class="q-top"><span class="q-idx">03</span></div>
+            <div class="q-body">是那晚十点，有人用他的卡，进了不该进的门。</div>
+            <div class="q-meta"><span class="m">21 字</span><span class="m">≈ 4.2s</span><span class="m"><svg class="i"><use href="#i-film"/></svg>01:29 – 01:34</span><span class="m" style="color:var(--cyan)"><span class="dot"></span>建议保留原声</span></div>
+            <div class="q-tools"><span class="tool"><svg class="i"><use href="#i-scissor"/></svg></span><span class="tool"><svg class="i"><use href="#i-spark"/></svg></span><span class="tool"><svg class="i"><use href="#i-volume"/></svg></span></div>
+          </article>
+
+          <article class="quote warn">
+            <div class="q-top"><span class="q-idx">04</span><span class="chip gold" style="height:18px;font-size:10px">偏长 · 建议拆分</span></div>
+            <div class="q-body">监控里没有他，可门禁记录不会说谎，更诡异的是，报案人比他早到了整整四十分钟。</div>
+            <div class="q-meta"><span class="m len">37 字</span><span class="m">≈ 7.4s</span><span class="m"><svg class="i"><use href="#i-film"/></svg>01:34 – 01:41</span></div>
+            <div class="q-tools"><span class="tool"><svg class="i"><use href="#i-scissor"/></svg></span><span class="tool"><svg class="i"><use href="#i-spark"/></svg></span><span class="tool"><svg class="i"><use href="#i-volume"/></svg></span></div>
+          </article>
+
+          <article class="quote">
+            <div class="q-top"><span class="q-idx">05</span></div>
+            <div class="q-body">他在等一个解释。</div>
+            <div class="q-meta"><span class="m">8 字</span><span class="m">≈ 1.6s</span><span class="m"><svg class="i"><use href="#i-film"/></svg>01:41 – 01:43</span></div>
+          </article>
+
+          <article class="quote">
+            <div class="q-top"><span class="q-idx">06</span></div>
+            <div class="q-body">等来的却是一句：你确定，你那天在家？</div>
+            <div class="q-meta"><span class="m">17 字</span><span class="m">≈ 3.4s</span><span class="m"><svg class="i"><use href="#i-film"/></svg>01:43 – 01:47</span></div>
+          </article>
+
+          <div class="continue-box">
+            <svg class="i"><use href="#i-spark"/></svg>
+            <span>让 AI 接着写，或输入一句要求，例如「更狠一点，别解释」</span>
+            <div class="grow"></div>
+            <span class="kbd">↵</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right -->
+      <section class="col">
+        <div class="col-head"><b>生成参数</b><div class="grow"></div><span class="mini">项目级</span></div>
+        <div class="inspector-scroll">
+          <div class="field">
+            <label>写作风格</label>
+            <div class="select"><span>悬疑 · 冷峻</span><span class="caret"><svg class="i"><use href="#i-chev-d"/></svg></span></div>
+          </div>
+          <div class="field">
+            <label>内容类型</label>
+            <div class="select"><span>悬疑 / 犯罪</span><span class="caret"><svg class="i"><use href="#i-chev-d"/></svg></span></div>
+          </div>
+          <div class="field">
+            <label>解说语言</label>
+            <div class="select"><span>中文（简体）</span><span class="caret"><svg class="i"><use href="#i-chev-d"/></svg></span></div>
+          </div>
+          <div class="field">
+            <label>目标字数</label>
+            <div class="input"><span class="mono">1,200</span><span class="ph" style="margin-left:auto">字 · 约 4 分</span></div>
+          </div>
+          <div class="field">
+            <label>原片占比 <span class="muted" style="margin-left:auto;font-family:var(--mono)">30%</span></label>
+            <div style="height:3px;border-radius:3px;background:rgba(255,255,255,.09);position:relative;margin-top:10px">
+              <i style="position:absolute;left:0;top:0;bottom:0;width:30%;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--gold-2))"></i>
+              <b style="position:absolute;left:30%;top:50%;width:10px;height:10px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(233,185,73,.18)"></b>
+            </div>
+          </div>
+          <div class="field">
+            <label>配音音色</label>
+            <div class="input"><span>云希 · 男声 · 纪录片</span><span style="margin-left:auto;color:var(--gold);display:flex;align-items:center;gap:4px;font-size:11px"><svg class="i" style="width:11px;height:11px"><use href="#i-play"/></svg>试听</span></div>
+          </div>
+          <div class="field">
+            <label>短句密度</label>
+            <div class="seg"><div class="on">标准</div><div>更密</div><div>更疏</div></div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="stat-box">
+            <div class="big"><b>1,286</b><span>字</span><div style="flex:1"></div><span>预计 4′17″</span></div>
+            <div class="rows">
+              <div class="row"><span>覆盖率</span><div class="track"><i style="width:92%;background:linear-gradient(90deg,var(--green),#9ff0c6)"></i></div><span class="v">92%</span></div>
+              <div class="row"><span>原声占比</span><div class="track"><i style="width:31%;background:linear-gradient(90deg,var(--cyan),#9fe9e2)"></i></div><span class="v">31%</span></div>
+              <div class="row"><span>钩子强度</span><div class="track"><i style="width:84%;background:linear-gradient(90deg,var(--gold),var(--gold-2))"></i></div><span class="v">A</span></div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:flex-start;background:rgba(233,185,73,.06);border:1px solid rgba(233,185,73,.2);border-radius:10px;padding:10px 11px">
+            <svg class="i" style="width:13px;height:13px;color:var(--gold);flex:0 0 13px;margin-top:1px"><use href="#i-spark"/></svg>
+            <div style="font-size:10.5px;color:var(--text-2);line-height:1.65">第 4 句 37 字，超过单镜承载。建议拆成两句，或把「报案人早到」单独做钩子。</div>
+          </div>
+        </div>
+
+        <div class="inspector-foot">
+          <button class="btn ghost" style="width:100%"><svg class="i"><use href="#i-refresh"/></svg>重新生成文案</button>
+          <button class="btn primary lg" style="width:100%">生成分镜<svg class="i"><use href="#i-arrow-r"/></svg></button>
+          <div class="muted" style="font-size:10px;text-align:center">预计消耗 ≈ 12K tokens · ¥ 0.03</div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<style>
+  .i { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .rail-item .i { width: 20px; height: 20px; }
+  .btn .i { width: 16px; height: 16px; }
+  .step .i { width: 10px; height: 10px; }
+</style>
+</body>
+</html>

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/schemas/
+.shots/
+*.log
+.DS_Store
+.vite.config.ts.*.tmpdir/
+.*.tmpdir/
+
+src-tauri/updater.key

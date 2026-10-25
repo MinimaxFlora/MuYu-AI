@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>幕语 · 分镜与时间轴</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.6 12 4l8 6.6V20a1 1 0 0 1-1 1h-4.4v-6H9.4v6H5a1 1 0 0 1-1-1Z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.2l2 2h7.8A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5Z"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16.5l9 5 9-5"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.6a7.6 7.6 0 0 0 0-3.2l1.8-1.4-1.9-3.3-2.1.9a7.7 7.7 0 0 0-2.8-1.6L14 2.6h-4l-.4 2.4A7.7 7.7 0 0 0 6.8 6.6l-2.1-.9L2.8 9l1.8 1.4a7.6 7.6 0 0 0 0 3.2L2.8 15l1.9 3.3 2.1-.9c.8.7 1.8 1.3 2.8 1.6l.4 2.4h4l.4-2.4c1-.3 2-.9 2.8-1.6l2.1.9 1.9-3.3Z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></symbol>
+    <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M20 12H5m0 0 6-6m-6 6 6 6"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M4 12h15m0 0-6-6m6 6-6 6"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5 13.9 9l5.6 1.9-5.6 1.9L12 18.5l-1.9-5.7L4.5 11 10.1 9 12 3.5Z"/><path d="M18.5 16.5 19.2 18l1.6.7-1.6.6-.7 1.6-.7-1.6-1.6-.6 1.6-.7Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 6.5"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M5 10v4h3l4 3.5v-11L8 10H5Z"/><path d="M16 9a4 4 0 0 1 0 6"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M9 4H4v5M15 4h5v5M15 20h5v-5M9 20H4v-5"/></symbol>
+    <symbol id="i-scissor" viewBox="0 0 24 24"><circle cx="6.5" cy="17" r="2.5"/><circle cx="6.5" cy="7" r="2.5"/><path d="M8.6 8.5 19 18M8.6 15.5 19 6"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M5 6h14M12 6v13M8.5 19h7"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v4.5h-4.5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v10m0 0 3.5-3.5M12 14l-3.5-3.5M5 18.5h14"/></symbol>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 12h2l2-5 3 10 3-12 3 14 2-7h3"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/></symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <aside class="rail">
+    <div class="rail-logo">幕</div>
+    <nav class="rail-nav">
+      <a class="rail-item"><svg class="i"><use href="#i-home"/></svg><span>首页</span></a>
+      <a class="rail-item active"><svg class="i"><use href="#i-folder"/></svg><span>项目</span></a>
+      <a class="rail-item"><svg class="i"><use href="#i-film"/></svg><span>素材</span></a>
+      <a class="rail-item"><svg class="i"><use href="#i-layers"/></svg><span>任务</span></a>
+    </nav>
+    <div class="rail-bottom">
+      <a class="rail-item"><svg class="i"><use href="#i-gear"/></svg><span>设置</span></a>
+      <div class="rail-avatar">林</div>
+    </div>
+  </aside>
+
+  <div class="main studio">
+    <header class="studio-top">
+      <a class="back"><svg class="i"><use href="#i-arrow-l"/></svg></a>
+      <div class="proj"><b>《雾港》第 1 集</b><span>第 4 步 / 5 · 分镜与配音 · 38 镜</span></div>
+      <div class="grow"></div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text-2)">
+        <span class="switch on"></span>自动对齐
+      </div>
+      <button class="btn ghost"><svg class="i"><use href="#i-play"/></svg>预览成片</button>
+      <button class="btn primary"><svg class="i"><use href="#i-download"/></svg>导出</button>
+    </header>
+
+    <div class="tl-body">
+      <div class="tl-main">
+        <div class="tl-left">
+          <div class="preview-wrap">
+            <div class="stage" style="height:390px">
+            <div class="preview" style="width:693px;height:390px;max-height:none">
+              <div class="poster" style="--p1:#c08434; --p2:#3d2f6b; --p3:#0d2f3a">
+                <div class="scene">
+                  <div class="s-lamp"></div>
+                  <div class="s-window"></div>
+                  <div class="s-table"></div>
+                  <div class="s-bag"></div>
+                </div>
+                <div class="still-title" style="font-size:34px;left:34px;bottom:64px;letter-spacing:.16em">雾 港</div>
+                <div class="still-meta" style="left:36px;bottom:104px">INTERROGATION ROOM · 01:17</div>
+              </div>
+              <div class="preview-shade"></div>
+              <div class="frame-badge"><span>原片</span><span class="on">成片预览</span></div>
+              <div style="position:absolute;right:12px;top:12px;z-index:4;display:flex;gap:6px">
+                <span class="chip" style="height:20px;font-size:9px;background:rgba(0,0,0,.45)">1080p</span>
+                <span class="chip" style="height:20px;font-size:9px;background:rgba(0,0,0,.45)">25 fps</span>
+              </div>
+              <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(8px);display:grid;place-items:center;color:#fff">
+                <svg class="i" style="width:20px;height:20px;margin-left:2px"><use href="#i-play"/></svg>
+              </div>
+              <div class="sub-line">而真正的问题，不是他撒了谎。</div>
+              <div class="player">
+                <span class="pbtn"><svg class="i"><use href="#i-pause"/></svg></span>
+                <span class="time">00:01:17 <em>/ 04:17</em></span>
+                <div class="pbar"><i></i><b></b></div>
+                <span class="pbtn vol"><svg class="i"><use href="#i-volume"/></svg></span>
+                <span class="pbtn"><svg class="i"><use href="#i-expand"/></svg></span>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <div class="shot-table">
+            <div class="shot-head">
+              <span>#</span><span>画面</span><span>时间码</span><span>镜头描述</span><span>解说 / 原声</span><span>OST</span><span></span>
+            </div>
+            <div class="shot-rows">
+              <div class="shot-row on">
+                <span class="idx">12</span>
+                <span class="th poster" style="--p1:#8a5a2c; --p2:#2c3d5c; --p3:#0d2028"></span>
+                <span class="tc">01:17.18 → 01:23.40</span>
+                <span class="pic">审讯室，警官把证据袋推过桌面</span>
+                <span class="narr">而真正的问题，不是他撒了谎。</span>
+                <span><span class="chip gold" style="height:19px;font-size:9px">解说</span></span>
+                <span class="st"><svg class="i" style="width:13px;height:13px;color:var(--gold)"><use href="#i-volume"/></svg></span>
+              </div>
+              <div class="shot-row">
+                <span class="idx">13</span>
+                <span class="th poster" style="--p1:#2f6f7a; --p2:#1d3a57; --p3:#0a1a24"></span>
+                <span class="tc">01:23.40 → 01:29.10</span>
+                <span class="pic">证据袋特写，手指收紧</span>
+                <span class="narr">播放原片 13</span>
+                <span><span class="chip cyan" style="height:19px;font-size:9px">原声</span></span>
+                <span class="st">原声</span>
+              </div>
+              <div class="shot-row">
+                <span class="idx">14</span>
+                <span class="th poster" style="--p1:#6a4a8a; --p2:#243a5c; --p3:#0b1620"></span>
+                <span class="tc">01:29.10 → 01:36.02</span>
+                <span class="pic">门禁记录屏幕，红色时间戳</span>
+                <span class="narr">是那晚十点，有人用他的卡，进了不该进的门。</span>
+                <span><span class="chip violet" style="height:19px;font-size:9px">混合</span></span>
+                <span class="st"><span class="dot" style="color:var(--green)"></span>0ms</span>
+              </div>
+              <div class="shot-row">
+                <span class="idx">15</span>
+                <span class="th poster" style="--p1:#7a5a2c; --p2:#2f4a3d; --p3:#101c18"></span>
+                <span class="tc">01:36.02 → 01:40.80</span>
+                <span class="pic">他看向单向玻璃，玻璃后有人起身</span>
+                <span class="narr">监控里没有他，可门禁记录不会说谎。</span>
+                <span><span class="chip gold" style="height:19px;font-size:9px">解说</span></span>
+                <span class="st"><svg class="i" style="width:13px;height:13px;color:var(--gold)"><use href="#i-volume"/></svg></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="tl-right">
+          <div class="col-head"><b>镜头 #12</b><div class="grow"></div><svg class="i" style="width:14px;height:14px;color:var(--text-3)"><use href="#i-trash"/></svg></div>
+          <div class="inspector-scroll">
+            <div class="field">
+              <label>音轨类型</label>
+              <div class="seg"><div class="on">解说</div><div>原声</div><div>混合</div></div>
+            </div>
+
+            <div class="field">
+              <label>时间码</label>
+              <div class="input"><span class="mono" style="font-size:11px">01:17.180</span><span class="ph">→</span><span class="mono" style="font-size:11px">01:23.400</span><span class="ph" style="margin-left:auto">6.22s</span></div>
+            </div>
+
+            <div class="field">
+              <label>来源素材</label>
+              <div class="select"><span style="font-size:11px">雾港_EP01.mp4</span><span class="caret"><svg class="i"><use href="#i-chev-d"/></svg></span></div>
+            </div>
+
+            <div class="field">
+              <label>画面描述</label>
+              <div style="border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.035);padding:8px 10px;font-size:10.5px;color:var(--text-2);line-height:1.6;min-height:46px">审讯室中景，警官把证据袋推过桌面，男主的手停在半空，灯管轻微闪烁。</div>
+            </div>
+
+            <div class="field">
+              <label>配音</label>
+              <div class="input"><span style="font-size:11px">云希 · 男声</span><span style="margin-left:auto;display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-3)">1.0x<svg class="i" style="width:11px;height:11px;color:var(--gold)"><use href="#i-play"/></svg></span></div>
+            </div>
+
+            <div class="field">
+              <label>音量 <span class="muted" style="margin-left:auto;font-family:var(--mono)">0 dB</span></label>
+              <div style="height:3px;border-radius:3px;background:rgba(255,255,255,.09);position:relative;margin-top:9px">
+                <i style="position:absolute;left:0;top:0;bottom:0;width:62%;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--gold-2))"></i>
+                <b style="position:absolute;left:62%;top:50%;width:10px;height:10px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(233,185,73,.18)"></b>
+              </div>
+            </div>
+
+            <div class="hr" style="margin:10px 0"></div>
+
+            <div class="stat-box">
+              <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-3);margin-bottom:8px">对齐检查<div style="flex:1"></div><span class="chip green" style="height:18px;font-size:9px"><span class="dot"></span>完美</span></div>
+              <div class="rows">
+                <div class="row"><span style="width:52px">配音时长</span><span class="v">6.22s</span><div class="track"><i style="width:100%;background:var(--gold)"></i></div></div>
+                <div class="row"><span style="width:52px">画面时长</span><span class="v">6.22s</span><div class="track"><i style="width:100%;background:var(--cyan)"></i></div></div>
+                <div class="row"><span style="width:52px">音画误差</span><span class="v">0 ms</span><div class="track"><i style="width:4%;background:var(--green)"></i></div></div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;display:flex;gap:8px">
+              <button class="btn ghost sm" style="flex:1"><svg class="i"><use href="#i-play"/></svg>试听</button>
+              <button class="btn ghost sm" style="flex:1"><svg class="i"><use href="#i-refresh"/></svg>重配画面</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-bar">
+          <span class="mono t">00:01:17 / 04:17</span>
+          <span class="chip" style="height:20px;font-size:9px">38 镜</span>
+          <div class="grow"></div>
+          <span class="muted" style="font-size:10px">吸附</span><span class="switch on" style="transform:scale(.86)"></span>
+          <span class="muted" style="font-size:10px;margin-left:8px">缩放</span>
+          <div class="zoom"><i><b></b></i></div>
+        </div>
+        <div class="tl-scroll">
+          <div class="tl-labels">
+            <div class="tl-label"><i style="background:#3a4661"></i>视频</div>
+            <div class="tl-label"><i style="background:var(--cyan)"></i>原声</div>
+            <div class="tl-label"><i style="background:var(--gold)"></i>配音</div>
+            <div class="tl-label"><i style="background:var(--violet)"></i>BGM</div>
+            <div class="tl-label"><i style="background:#c9cdd8"></i>字幕</div>
+          </div>
+          <div class="tl-canvas">
+            <div class="ruler">
+              <span style="left:2%">00:00</span><span style="left:20%">00:50</span><span style="left:39%">01:40</span><span style="left:58%">02:30</span><span style="left:77%">03:20</span><span style="left:96%">04:10</span>
+            </div>
+            <div class="tracks">
+              <div class="track">
+                <div class="clip video" style="left:1%;width:8%">SH 09</div>
+                <div class="clip video" style="left:9.4%;width:7%">SH 10</div>
+                <div class="clip video" style="left:16.6%;width:9.2%">SH 11</div>
+                <div class="clip video" style="left:26%;width:8.4%;border-color:rgba(233,185,73,.45)">SH 12</div>
+                <div class="clip video" style="left:34.6%;width:7.6%">SH 13</div>
+                <div class="clip video" style="left:42.4%;width:9%">SH 14</div>
+                <div class="clip video" style="left:51.6%;width:8%">SH 15</div>
+                <div class="clip video" style="left:59.8%;width:12%">SH 16</div>
+                <div class="clip video" style="left:72%;width:10%">SH 17</div>
+                <div class="clip video" style="left:82.2%;width:16%">SH 18 – 21</div>
+              </div>
+              <div class="track">
+                <div class="clip ost1" style="left:34.6%;width:7.6%">原声 13</div>
+                <div class="clip ost1" style="left:59.8%;width:5%">原声 16</div>
+                <div class="clip ost1" style="left:86%;width:4.5%">原声 20</div>
+              </div>
+              <div class="track">
+                <div class="clip audio" style="left:1%;width:8%"><div class="wave"></div></div>
+                <div class="clip audio" style="left:9.4%;width:7%"><div class="wave"></div></div>
+                <div class="clip audio" style="left:16.6%;width:9.2%"><div class="wave"></div></div>
+                <div class="clip audio" style="left:26%;width:8.4%;box-shadow:0 0 0 1px rgba(233,185,73,.5)"><div class="wave"></div></div>
+                <div class="clip audio" style="left:42.4%;width:9%"><div class="wave"></div></div>
+                <div class="clip audio" style="left:51.6%;width:8%"><div class="wave"></div></div>
+                <div class="clip audio" style="left:65%;width:7%"><div class="wave"></div></div>
+                <div class="clip audio" style="left:72%;width:10%"><div class="wave"></div></div>
+              </div>
+              <div class="track">
+                <div class="clip bgm" style="left:0;width:100%"><div class="wave"></div><span style="position:relative;z-index:2">BGM · 低音铺底 · -18 LUFS</span></div>
+              </div>
+              <div class="track">
+                <div class="clip sub" style="left:2%;width:7%">海雾漫过码头</div>
+                <div class="clip sub" style="left:10%;width:6%">没有编号的货轮</div>
+                <div class="clip sub" style="left:17.4%;width:8%">甲板上站着一个人</div>
+                <div class="clip sub" style="left:26.8%;width:8%">只是一次普通问询</div>
+                <div class="clip sub" style="left:35.4%;width:6.6%">播放原片 13</div>
+                <div class="clip sub" style="left:43.2%;width:8.4%">那晚十点</div>
+                <div class="clip sub" style="left:52.4%;width:7.4%">可门禁记录不会说谎</div>
+              </div>
+              <div class="playhead" style="left:30%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-status">
+        <span>38 个镜头</span><span>总时长 <b>04:17</b></span><span>配音 <b>38 / 38</b></span>
+        <span>对齐 <b style="color:var(--green)">100%</b></span><span>预计渲染 <b>03:12</b></span>
+        <div class="grow"></div>
+        <span>输出 1080 × 1920 · H.264 · 8 Mbps</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .i { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .rail-item .i { width: 20px; height: 20px; }
+  .btn .i { width: 16px; height: 16px; }
+  .studio-top .back .i { width: 16px; height: 16px; }
+  .preview { flex: 0 0 auto; }
+</style>
+</body>
+</html>
