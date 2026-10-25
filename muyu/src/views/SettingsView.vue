@@ -249,7 +249,7 @@ function soon() {
               <span v-else-if="saved" class="test-result">已保存</span>
             </div>
             <p class="settings-note">
-              Key 目前明文保存在本机用户目录的 <code>settings.json</code>；P2 迁移到 Windows 凭据管理器。
+              Key 保存在 Windows 凭据管理器（服务 <code>com.muyu.studio</code>），<code>settings.json</code> 不落明文；旧版本明文 Key 会在首次读取时自动迁移。
               默认走 OpenAI 兼容接口，DeepSeek / 硅基流动 / OpenAI / 本地 Ollama 等都可直接填 Base URL。
             </p>
           </section>
@@ -353,7 +353,7 @@ function soon() {
 
           <section class="panel about">
             <div class="panel-head"><b>关于</b><div class="panel-grow" /></div>
-            <div class="about-row"><span>版本</span><b>0.9.5 · P4</b></div>
+            <div class="about-row"><span>版本</span><b>0.9.6 · P4</b></div>
             <div class="about-row"><span>技术</span><b>Tauri 2 + Rust + Vue 3 + Naive UI</b></div>
             <div class="about-row"><span>设计</span><b>幕语 · Cinema Noir</b></div>
             <p class="settings-note">P4 范围：剪映草稿、素材复制、BGM 混音、ducking、淡入淡出、硬件编码探测。</p>
