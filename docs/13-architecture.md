@@ -224,12 +224,12 @@ pnpm tauri build --bundles nsis
 | P4 BGM | 混音 / 闪避 / 淡入淡出 / 220Hz 验证 |
 | P4 编码 | NVENC/QSV/AMF 探测失败 → x264 回退 |
 | P4 批量 | 2 项目 → 2 成功 / 0 失败 |
-| 构建 | `cargo test` 2 passed / 4 ignored；`pnpm build` 通过 |
+| 构建 | `cargo test` 3 passed / 7 ignored；`pnpm build` 通过 |
 
 ## 12. 已知边界
 
-- 剪映草稿未在剪映内打开验证（本机未安装）。
-- 硬件编码未在真实 GPU 验证。
+- 剪映草稿已在 11.6 识别，官方引擎导出通过；GUI 编辑器显示仍需人工确认。
+- 硬件编码已验证 AMD AMF；NVENC/QSV 在本机不可用。
 - 队列不持久化、串行、共用设置。
 - 没有链接下载 / ASR / 本地克隆 TTS。
 - 没有签名证书；安装包未签名。
