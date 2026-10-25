@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMessage } from "naive-ui";
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 import {
@@ -50,6 +50,18 @@ const options = ref({
 });
 
 let unlisten: (() => void) | undefined;
+const BATCH_STORAGE = "muyu.batch.v1";
+
+function persistBatch() {
+  try {
+    localStorage.setItem(
+      BATCH_STORAGE,
+      JSON.stringify({ selected: selected.value, options: options.value }),
+    );
+  } catch {
+    // localStorage 不可用时保持内存态
+  }
+}
 
 const readyItems = computed(() => items.value.filter((item) => item.ready));
 const selectedItems = computed(() =>
@@ -75,14 +87,17 @@ function toggle(item: BatchItem) {
   const index = selected.value.indexOf(item.project.id);
   if (index >= 0) selected.value.splice(index, 1);
   else selected.value.push(item.project.id);
+  persistBatch();
 }
 
 function selectAll() {
   selected.value = readyItems.value.map((item) => item.project.id);
+  persistBatch();
 }
 
 function clearAll() {
   selected.value = [];
+  persistBatch();
 }
 
 async function load() {
@@ -111,6 +126,19 @@ async function load() {
       };
     });
     selected.value = items.value.filter((item) => item.ready).map((item) => item.project.id);
+    try {
+      const raw = localStorage.getItem(BATCH_STORAGE);
+      if (raw) {
+        const stored = JSON.parse(raw) as { selected?: string[]; options?: Partial<typeof options.value> };
+        if (Array.isArray(stored.selected)) {
+          const ready = new Set(items.value.filter((item) => item.ready).map((item) => item.project.id));
+          selected.value = stored.selected.filter((id) => ready.has(id));
+        }
+        if (stored.options) Object.assign(options.value, stored.options);
+      }
+    } catch {
+      // 忽略损坏的本地队列
+    }
     if (isTauri()) {
       const { listen } = await import("@tauri-apps/api/event");
       unlisten = await listen<{ percent: number; message: string; done: boolean }>(
@@ -182,6 +210,7 @@ async function stop() {
 }
 
 onMounted(load);
+watch(options, persistBatch, { deep: true });
 onUnmounted(() => unlisten?.());
 </script>
 

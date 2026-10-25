@@ -5,6 +5,7 @@ use crate::model::{Project, ScriptItem, ScriptParams};
 use crate::settings::LlmSettings;
 
 const MAX_CONTEXT_CHARS: usize = 60_000;
+const ITEM_CONTEXT_CHARS: usize = 45_000;
 
 pub fn fmt_ts(seconds: f64) -> String {
     let total = seconds.max(0.0);
@@ -39,6 +40,23 @@ pub fn subtitle_context(project: &Project) -> String {
         out.push_str(&line);
     }
     out
+}
+
+fn subtitle_windows(project: &Project, max_chars: usize) -> Vec<String> {
+    let mut windows = Vec::new();
+    let mut current = String::new();
+    for cue in &project.subtitles {
+        let text = cue.text.replace('\n', " ");
+        let line = format!("[{} - {}] {}\n", fmt_ts(cue.start), fmt_ts(cue.end), text);
+        if !current.is_empty() && current.len() + line.len() > max_chars {
+            windows.push(std::mem::take(&mut current));
+        }
+        current.push_str(&line);
+    }
+    if !current.is_empty() {
+        windows.push(current);
+    }
+    windows
 }
 
 fn video_meta(project: &Project) -> (u32, String, f64) {
@@ -306,7 +324,7 @@ fn normalize_llm_items(raw: &str, project: &Project) -> Vec<ScriptItem> {
         });
     }
 
-    items.truncate(300);
+    items.truncate(2000);
     items
 }
 
@@ -341,7 +359,7 @@ fn copy_prompt(project: &Project, params: &ScriptParams) -> (String, String) {
     (system, user)
 }
 
-fn items_prompt(project: &Project) -> (String, String) {
+fn items_prompt_with_context(project: &Project, context: &str) -> (String, String) {
     let system = "你是影视解说剪辑师。只输出严格 JSON，不要 Markdown 代码块或解释。".to_string();
     let copy = project
         .narration_copy
@@ -354,7 +372,7 @@ fn items_prompt(project: &Project) -> (String, String) {
         project.name,
         project.params.original_ratio,
         copy,
-        subtitle_context(project),
+        context,
         project.params.original_ratio,
         project.videos.first().map(|v| v.name.clone()).unwrap_or_else(|| "video.mp4".into())
     );
@@ -421,22 +439,58 @@ pub async fn generate_items(
             Some("演示模式：未配置 API Key，分镜为本地规则生成。".into()),
         ));
     }
-    let (system, user) = items_prompt(project);
-    match llm::chat(settings, &system, &user, true, 6000).await {
-        Ok(raw) => {
-            let items = normalize_llm_items(&raw, project);
-            if items.is_empty() {
-                Ok((
-                    demo_items(project)?,
-                    Some("模型没有返回可用的 items，已回退本地规则。".into()),
-                ))
-            } else {
-                Ok((items, None))
-            }
+    let windows = subtitle_windows(project, ITEM_CONTEXT_CHARS);
+    let mut all = Vec::new();
+    let mut empty_windows = 0usize;
+    for context in &windows {
+        let (system, user) = items_prompt_with_context(project, context);
+        let raw = llm::chat(settings, &system, &user, true, 6000).await?;
+        let chunk = normalize_llm_items(&raw, project);
+        if chunk.is_empty() {
+            empty_windows += 1;
+        } else {
+            all.extend(chunk);
         }
-        Err(err) => Ok((
+    }
+    if all.is_empty() {
+        return Ok((
             demo_items(project)?,
-            Some(format!("模型请求失败，已回退本地规则：{err}")),
-        )),
+            Some("模型没有返回可用的 items，已回退本地规则。".into()),
+        ));
+    }
+    for (index, item) in all.iter_mut().enumerate() {
+        item.id = index as u32 + 1;
+    }
+    let mut notes = Vec::new();
+    if windows.len() > 1 {
+        notes.push(format!("长视频分段生成：{} 段", windows.len()));
+    }
+    if empty_windows > 0 {
+        notes.push(format!("{empty_windows} 段模型未返回可用镜头"));
+    }
+    Ok((all, if notes.is_empty() { None } else { Some(notes.join("；")) }))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::model::SubtitleCue;
+
+    #[test]
+    fn long_subtitles_are_split_without_losing_cues() {
+        let mut project = Project::default();
+        project.subtitles = (0..1200)
+            .map(|index| SubtitleCue {
+                index: index as u32 + 1,
+                start: index as f64,
+                end: index as f64 + 0.9,
+                text: format!("第 {index} 句测试字幕，用于验证长视频分段不会丢内容。"),
+            })
+            .collect();
+        let windows = subtitle_windows(&project, 2000);
+        assert!(windows.len() > 10);
+        assert!(windows.iter().all(|window| window.len() <= 2200));
+        assert!(windows.first().unwrap().contains("第 0 句"));
+        assert!(windows.last().unwrap().contains("第 1199 句"));
     }
 }

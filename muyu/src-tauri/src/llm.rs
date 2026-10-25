@@ -73,6 +73,30 @@ async fn post(settings: &LlmSettings, payload: &Value) -> Result<String, String>
         })
 }
 
+async fn post_retry(settings: &LlmSettings, payload: &Value) -> Result<String, String> {
+    let mut last = String::new();
+    for attempt in 0..3 {
+        match post(settings, payload).await {
+            Ok(text) => return Ok(text),
+            Err(err) => {
+                let retryable = err.contains("请求模型失败")
+                    || err.contains("读取模型响应失败")
+                    || err.contains("HTTP 429")
+                    || err.contains("HTTP 500")
+                    || err.contains("HTTP 502")
+                    || err.contains("HTTP 503")
+                    || err.contains("HTTP 504");
+                last = err;
+                if !retryable || attempt == 2 {
+                    break;
+                }
+                tokio::time::sleep(Duration::from_millis(500 * (1 << attempt))).await;
+            }
+        }
+    }
+    Err(last)
+}
+
 pub async fn chat(
     settings: &LlmSettings,
     system: &str,
@@ -88,7 +112,7 @@ pub async fn chat(
     }
 
     let payload = body(settings, system, user, json_mode, max_tokens);
-    match post(settings, &payload).await {
+    match post_retry(settings, &payload).await {
         Ok(text) => Ok(text),
         Err(err) if json_mode && (err.contains("HTTP 400") || err.contains("HTTP 422")) => {
             // 部分 OpenAI 兼容网关不支持 response_format，退化为纯文本 JSON 输出。
@@ -96,7 +120,7 @@ pub async fn chat(
             if let Some(map) = fallback.as_object_mut() {
                 map.remove("response_format");
             }
-            let retry = post(settings, &fallback).await?;
+            let retry = post_retry(settings, &fallback).await?;
             Ok(retry)
         }
         Err(err) => Err(err),
