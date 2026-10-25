@@ -122,9 +122,9 @@ muyu/
 
 ## 发布
 
-- `release/MuYu_0.9.8_x64-setup.exe`：NSIS 安装包（Authenticode 未签名）
-- `release/MuYu_0.9.8_x64-setup.exe.sig`：updater minisign 签名
-- `release/MuYu_0.9.8_portable.exe`：免安装 exe
+- `release/MuYu_0.9.9_x64-setup.exe`：NSIS 安装包（Authenticode 未签名）
+- `release/MuYu_0.9.9_x64-setup.exe.sig`：updater minisign 签名
+- `release/MuYu_0.9.9_portable.exe`：免安装 exe
 
 安装包不携带 FFmpeg；目标机需要 FFmpeg/FFprobe 在 PATH。
 
