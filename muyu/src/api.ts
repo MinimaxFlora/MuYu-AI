@@ -342,6 +342,11 @@ export async function detectJianyingRoot(): Promise<string | null> {
   return invoke<string | null>("detect_jianying_root");
 }
 
+export async function allowAssetPath(path: string): Promise<string> {
+  if (!isTauri()) return path;
+  return invoke<string>("allow_asset_path", { path });
+}
+
 export async function openPath(path: string): Promise<void> {
   if (!isTauri()) return;
   await invoke("open_path", { path });

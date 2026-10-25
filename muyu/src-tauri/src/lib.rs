@@ -15,8 +15,8 @@ mod updater;
 
 use commands::{
     analyze_plot, attach_subtitle, cancel_render, cancel_tts, check_environment, create_project,
-    delete_project, detect_jianying_root, export_items, export_jianying, export_srt, generate_copy,
-    generate_items,
+    delete_project, detect_jianying_root, allow_asset_path, export_items, export_jianying,
+    export_srt, generate_copy, generate_items,
     get_project, get_settings, list_projects, list_tts_voices, open_log_dir, open_path,
     preview_voice, probe_media, remove_subtitle, render_video, reveal_project, save_project,
     save_settings, synthesize_items, test_llm,
@@ -152,6 +152,7 @@ pub fn run() {
             export_jianying,
             open_path,
             open_log_dir,
+            allow_asset_path,
             detect_jianying_root,
             check_update,
             install_update

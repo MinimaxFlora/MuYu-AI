@@ -663,6 +663,16 @@ pub async fn export_jianying(
 }
 
 #[tauri::command]
+pub fn allow_asset_path(app: tauri::AppHandle, path: String) -> Result<String, String> {
+    let canonical = std::fs::canonicalize(&path)
+        .map_err(|e| format!("无法解析视频路径：{e}"))?;
+    app.asset_protocol_scope()
+        .allow_file(&canonical)
+        .map_err(|e| format!("无法授权视频预览：{e}"))?;
+    Ok(canonical.to_string_lossy().to_string())
+}
+
+#[tauri::command]
 pub fn detect_jianying_root() -> Option<String> {
     crate::jianying::detect_draft_root()
 }

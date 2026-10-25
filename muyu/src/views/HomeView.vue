@@ -374,7 +374,7 @@ onUnmounted(() => window.removeEventListener("muyu:files-dropped", onDropped));
               <span class="dot-sep">·</span>
               <span>源视频不会被复制</span>
               <div class="foot-grow" />
-              <span>幕语 0.9.11 · P4</span>
+              <span>幕语 0.9.12 · P4</span>
             </footer>
           </div>
 

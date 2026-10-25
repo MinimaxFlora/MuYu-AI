@@ -1,6 +1,6 @@
 [package]
 name = "muyu"
-version = "0.9.11"
+version = "0.9.12"
 description = "幕语 · AI 影视解说工作台"
 authors = ["Muyu Studio"]
 edition = "2021"

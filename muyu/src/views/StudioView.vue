@@ -4,6 +4,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import {
+  allowAssetPath,
   assetUrl,
   attachSubtitle,
   getProject,
@@ -33,12 +34,18 @@ const activeIndex = ref(0);
 const trim = ref<[number, number]>([0, 0]);
 const savedState = ref<"saved" | "saving" | "error">("saved");
 const coverFailed = ref(false);
+const videoFailed = ref(false);
+const previewPaths = ref<Record<string, string>>({});
 
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
 
 const activeVideo = computed(() => project.value?.videos[activeIndex.value]);
 const duration = computed(() => activeVideo.value?.info.duration ?? 0);
 const coverUrl = computed(() => assetUrl(project.value?.coverPath));
+const videoUrl = computed(() => {
+  const path = activeVideo.value?.path;
+  return assetUrl(path ? previewPaths.value[path] ?? path : null);
+});
 const posterStyle = computed(() => {
   const palettes = [
     ["#c08434", "#3d2f6b", "#0d2f3a"],
@@ -77,7 +84,19 @@ async function load() {
   try {
     project.value = await getProject(String(route.params.id));
     activeIndex.value = 0;
+    videoFailed.value = false;
     syncTrimFromProject();
+    if (isTauri()) {
+      await Promise.all(
+        project.value.videos.map(async (video) => {
+          try {
+            previewPaths.value[video.path] = await allowAssetPath(video.path);
+          } catch {
+            // 回退到原始路径，播放失败时显示封面
+          }
+        }),
+      );
+    }
   } catch (err) {
     error.value = errorText(err);
   } finally {
@@ -298,8 +317,18 @@ onMounted(load);
           <div class="stage-wrap">
             <div class="stage">
               <div class="stage-preview">
+                <video
+                  v-if="videoUrl && !videoFailed"
+                  class="stage-video"
+                  :src="videoUrl"
+                  :poster="coverUrl || undefined"
+                  controls
+                  playsinline
+                  preload="metadata"
+                  @error="videoFailed = true"
+                />
                 <img
-                  v-if="coverUrl && !coverFailed"
+                  v-else-if="coverUrl && !coverFailed"
                   :src="coverUrl"
                   alt=""
                   @error="coverFailed = true"
@@ -320,11 +349,11 @@ onMounted(load);
                   <span>{{ activeVideo ? Math.round(activeVideo.info.fps) : "—" }} fps</span>
                 </div>
 
-                <button class="stage-play" disabled title="播放器将在 P1 接入">
+                <button v-if="!videoUrl || videoFailed" class="stage-play" disabled title="无法预览原片">
                   <Icon name="play" :size="20" />
                 </button>
 
-                <div class="stage-caption">
+                <div v-if="!videoUrl || videoFailed" class="stage-caption">
                   {{ project.name }} · 封面取自原片第 {{ Math.max(1, Math.round(duration * 0.1)) }} 秒
                 </div>
               </div>

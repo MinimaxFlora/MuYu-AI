@@ -462,6 +462,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid rgba(233, 185, 73, 0.
   background: #090b10; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
 }
 .stage-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.stage-video { width: 100%; height: 100%; object-fit: contain; display: block; background: #000; }
 .stage-poster { position: absolute; inset: 0; }
 .stage-title {
   position: absolute; left: 22px; bottom: 30px; z-index: 3; display: flex; gap: 4px;
