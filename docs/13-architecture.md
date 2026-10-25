@@ -238,8 +238,8 @@ pnpm tauri build --bundles nsis
 ## 13. 发布结果
 
 - **NSIS 安装包**：`muyu/release/MuYu_0.9.3_x64-setup.exe`
-  - 大小：4,699,997 B
-  - SHA256：`B9E644BCB96734EAF822774E059926E0282706C97F2DE9DD1103311E33D87EE2`
+  - 大小：4,702,222 B
+  - SHA256：`76B86EEAF25ABD6BE2ADF15466FEE0644DB5CFB0456F01938ED009E03A6988AF`
   - 未签名（本机无代码签名证书）
 - **Portable exe**：`muyu/release/MuYu_0.9.3_portable.exe`
   - 大小：9,143,296 B
