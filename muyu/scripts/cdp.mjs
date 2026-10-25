@@ -1,7 +1,7 @@
 const expression = process.argv[2] || "1+1";
 
 const targets = await (await fetch("http://127.0.0.1:9222/json/list")).json();
-const page = targets.find((t) => t.type === "page" && t.url.includes("1420"));
+const page = targets.find((t) => t.type === "page" && (t.url.includes("1420") || t.url.includes("tauri.localhost")));
 if (!page) {
   console.error("no page target", targets.map((t) => [t.type, t.url]));
   process.exit(1);
