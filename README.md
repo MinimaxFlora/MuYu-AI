@@ -35,6 +35,7 @@ pnpm tauri dev
 | [`docs/13-architecture.md`](docs/13-architecture.md) | 项目结构与发布说明 |
 | [`docs/14-release-hardening.md`](docs/14-release-hardening.md) | 日志/自启/签名/更新 |
 | [`docs/15-updater.md`](docs/15-updater.md) | GitHub Release 自动更新 |
+| [`docs/16-jianying-gpu-validation.md`](docs/16-jianying-gpu-validation.md) | 剪映 11.6 草稿与 GPU 编码验证 |
 | [`muyu/release/`](muyu/release/) | NSIS 安装包 + portable exe |
 | [`design/`](design/) | 高保真界面稿 + 真实桌面端截图 |
 | `_research/NarratoAI/` | 参考项目源码（MIT，只读研究用） |

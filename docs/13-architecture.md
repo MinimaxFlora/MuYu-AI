@@ -1,6 +1,6 @@
 # 幕语 · 架构与项目结构
 
-版本：0.9.6 · P4（收尾）
+版本：0.9.8 · P4（收尾）
 日期：2026-10-25
 
 ---
@@ -174,7 +174,7 @@ audioPath / audioDuration
 
 - **identifier**：`com.muyu.studio`（反向域名）。
 - **productName**：`MuYu`（ASCII，安装包/可执行文件名）；窗口标题仍是「幕语 MuYu」。
-- **版本**：semver `0.9.6`。
+- **版本**：semver `0.9.8`。
 - **bundle**：publisher / copyright / category / shortDescription / longDescription 全部填写；Windows 目标为 NSIS。
 - **NSIS**：`installMode=currentUser`，简体中文 + English 双语安装器，`startMenuFolder=MuYu`，安装器图标使用 `icons/icon.ico`。
 - **托盘**：`TrayIconBuilder` 常驻；左键显示主窗口；菜单「显示主窗口 / 打开项目库 / 设置 / 退出 MuYu」。
@@ -189,7 +189,7 @@ audioPath / audioDuration
 
 实测：托盘创建成功；点 X 后进程仍在、窗口隐藏；再次启动只保留一个进程并重新显示窗口；生产 CSP 下首页/设置正常渲染；日志 `MuYu started` 已落盘。
 
-> 安装包文件名不再使用中文：`MuYu_0.9.6_x64-setup.exe`。
+> 安装包文件名不再使用中文：`MuYu_0.9.8_x64-setup.exe`。
 
 ## 10. 构建与发布
 
@@ -237,17 +237,17 @@ pnpm tauri build --bundles nsis
 
 ## 13. 发布结果
 
-- **GitHub Release**：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.6`
-- **NSIS 安装包**：`muyu/release/MuYu_0.9.6_x64-setup.exe`（GitHub Actions 构建）
-  - 大小：4,706,384 B
-  - SHA256：`0DA3DCF18B3B305132A616F723595D74412F1BF659DAB4029E868C965B84C089`
+- **GitHub Release**：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.8`
+- **NSIS 安装包**：`muyu/release/MuYu_0.9.8_x64-setup.exe`（GitHub Actions 构建）
+  - 大小：4,708,215 B
+  - SHA256：`F7234ACD4EAC353CF7FD78669F62BE765B09C24C33144658B8DBC6EF05C3EC5A`
   - Authenticode 未签名（本机无代码签名证书）
-- **updater 签名**：`MuYu_0.9.6_x64-setup.exe.sig`（minisign）
+- **updater 签名**：`MuYu_0.9.8_x64-setup.exe.sig`（minisign）
 - **更新清单**：`latest.json` 1,383 B，包含 `windows-x86_64` 与 `windows-x86_64-nsis`
-- **Portable exe**：`muyu/release/MuYu_0.9.6_portable.exe`
-  - 大小：9,114,624 B
+- **Portable exe**：`muyu/release/MuYu_0.9.8_portable.exe`
+  - 大小：9,119,232 B
 - 构建环境：NASM 2.16.03 + `CARGO_TARGET_DIR=C:\muyu-target`（规避 NASM 中文路径问题）
-- 安装包内 exe 版本：0.9.6
+- 安装包内 exe 版本：0.9.8
 
 ### 运行前置
 
