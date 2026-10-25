@@ -76,17 +76,17 @@ https://github.com/<owner>/<repo>/releases/latest/download/latest.json
 发布后资产应包含：
 
 ```
-MuYu_0.9.5_x64-setup.exe
-MuYu_0.9.5_x64-setup.exe.sig
+MuYu_0.9.6_x64-setup.exe
+MuYu_0.9.6_x64-setup.exe.sig
 latest.json
 ```
 
 ### 3.1 已发布（2026-10-25）
 
-- Release：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.5`
-- Actions run `40193247410`：成功。
+- Release：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.6`
+- Actions run `40194495894`：成功。
 - 资产：
-  - `MuYu_0.9.5_x64-setup.exe` 4,699,108 B
+  - `MuYu_0.9.6_x64-setup.exe` 4,706,384 B
   - `.sig` 432 B
   - `latest.json` 1,383 B
 - `latest.json` 已验证包含 `windows-x86_64` 和 `windows-x86_64-nsis`，两项都有签名与 GitHub 下载地址。
@@ -99,8 +99,8 @@ latest.json
 4. 打 tag：
 
 ```bash
-git tag v0.9.5
-git push origin v0.9.5
+git tag v0.9.6
+git push origin v0.9.6
 ```
 
 5. Actions 完成后，在 Release 页面确认 `latest.json` 已上传。
@@ -110,10 +110,11 @@ git push origin v0.9.5
 
 - **0.9.3 → 0.9.4**：检查、下载、验签、NSIS 安装成功；发现 NSIS 语言选择框阻塞 passive 更新。
 - **0.9.4 → 0.9.5**：已关闭 `displayLanguageSelector`；检查、下载、安装无弹窗，安装目录 `%LOCALAPPDATA%\MuYu`，版本变为 0.9.5。
+- **0.9.5 → 0.9.6**：检查、下载、安装无弹窗；安装后版本 0.9.6；同时完成 API Key 凭据迁移验证。
 
 ## 5. 限制
 
-- 已完成 0.9.3→0.9.4、0.9.4→0.9.5 两次真实升级；尚未测试失败回滚/断网重试。
+- 已完成 0.9.3→0.9.4、0.9.4→0.9.5、0.9.5→0.9.6 三次真实升级；尚未测试失败回滚/断网重试。
 - 私钥丢失后无法签发后续更新，必须备份。
 - `latest.json` 依赖 GitHub `latest`，预发布版本不会被 `latest` 选中。
 - 未接入 Clash 那样的镜像代理与静默后台缓存；当前是手动确认 + 自动检查提醒。

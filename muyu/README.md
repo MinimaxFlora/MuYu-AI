@@ -122,9 +122,9 @@ muyu/
 
 ## 发布
 
-- `release/MuYu_0.9.5_x64-setup.exe`：NSIS 安装包（Authenticode 未签名）
-- `release/MuYu_0.9.5_x64-setup.exe.sig`：updater minisign 签名
-- `release/MuYu_0.9.5_portable.exe`：免安装 exe
+- `release/MuYu_0.9.6_x64-setup.exe`：NSIS 安装包（Authenticode 未签名）
+- `release/MuYu_0.9.6_x64-setup.exe.sig`：updater minisign 签名
+- `release/MuYu_0.9.6_portable.exe`：免安装 exe
 
 安装包不携带 FFmpeg；目标机需要 FFmpeg/FFprobe 在 PATH。
 
@@ -139,7 +139,7 @@ muyu/
 - 字幕依赖系统 Microsoft YaHei。
 - FFmpeg 使用系统 PATH，不随包分发。
 - 真实模型请求需要自备 Key；本机没有 Key，只验证了降级与演示链路。
-- Key 明文保存在本机 `settings.json`。
+- API Key 保存在 Windows 凭据管理器（`com.muyu.studio` / `llm-api-key`），`settings.json` 不落明文。
 
 ## 与 NarratoAI 的关系
 
