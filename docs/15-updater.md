@@ -87,8 +87,8 @@ latest.json
 - Actions run `40203753214`：成功。
 - 资产：
   - `MuYu_0.9.10_x64-setup.exe` 4,713,905 B
-  - `.sig` 432 B
-  - `latest.json` 1,383 B
+  - `.sig` 436 B
+  - `latest.json` 1,397 B
 - `latest.json` 已验证包含 `windows-x86_64` 和 `windows-x86_64-nsis`，两项都有签名与 GitHub 下载地址。
 
 ## 4. 首次配置

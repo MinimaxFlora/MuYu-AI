@@ -244,7 +244,7 @@ pnpm tauri build --bundles nsis
   - SHA256：`44E85CBB190DB4D32104FE59E415E7DABA871139A8619E15019BC867503109B0`
   - Authenticode 未签名（本机无代码签名证书）
 - **updater 签名**：`MuYu_0.9.10_x64-setup.exe.sig`（minisign）
-- **更新清单**：`latest.json` 1,383 B，包含 `windows-x86_64` 与 `windows-x86_64-nsis`
+- **更新清单**：`latest.json` 1,397 B，包含 `windows-x86_64` 与 `windows-x86_64-nsis`
 - **Portable exe**：`muyu/release/MuYu_0.9.10_portable.exe`
   - 大小：9,128,960 B
 - 构建环境：NASM 2.16.03 + `CARGO_TARGET_DIR=C:\muyu-target`（规避 NASM 中文路径问题）
