@@ -1081,24 +1081,97 @@ pub fn export_draft(project: &Project, root: &str, name: Option<String>) -> Resu
 }
 
 fn jianying_exists() -> bool {
-    let mut candidates = vec![
-        PathBuf::from("C:/Program Files/JianyingPro/JianyingPro.exe"),
-        PathBuf::from("C:/Program Files (x86)/JianyingPro/JianyingPro.exe"),
-        PathBuf::from("C:/JianyingPro/JianyingPro.exe"),
-        PathBuf::from("D:/JianyingPro/JianyingPro.exe"),
-        PathBuf::from("E:/JianyingPro/JianyingPro.exe"),
-    ];
-    if let Ok(local) = std::env::var("LOCALAPPDATA") {
-        let base = Path::new(&local).join("JianyingPro");
-        candidates.push(base.join("JianyingPro.exe"));
-        if let Ok(entries) = fs::read_dir(base.join("Apps")) {
-            for entry in entries.flatten() {
-                let path = entry.path();
-                if path.extension().map(|ext| ext.eq_ignore_ascii_case("exe")).unwrap_or(false) {
-                    candidates.push(path);
+    let mut candidates: Vec<PathBuf> = Vec::new();
+
+    #[cfg(windows)]
+    {
+        use winreg::enums::{
+            HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE, KEY_READ, KEY_WOW64_32KEY, KEY_WOW64_64KEY,
+        };
+        use winreg::RegKey;
+
+        let uninstall_paths = [
+            "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+            "Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+        ];
+        for hive in [HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE] {
+            for flags in [KEY_READ | KEY_WOW64_64KEY, KEY_READ | KEY_WOW64_32KEY] {
+                for uninstall_path in uninstall_paths {
+                    let Ok(root) = RegKey::predef(hive).open_subkey_with_flags(uninstall_path, flags)
+                    else {
+                        continue;
+                    };
+                    for name in root.enum_keys().flatten() {
+                        let Ok(item) = root.open_subkey_with_flags(&name, flags) else {
+                            continue;
+                        };
+                        let display: String = item.get_value("DisplayName").unwrap_or_default();
+                        if !display.contains("剪映") && !display.to_lowercase().contains("jianying") {
+                            continue;
+                        }
+                        for value_name in ["InstallLocation", "DisplayIcon", "UninstallString"] {
+                            let raw: String = item.get_value(value_name).unwrap_or_default();
+                            push_jianying_candidates(&mut candidates, &raw);
+                        }
+                    }
+                }
+            }
+        }
+
+        for hive in [HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE] {
+            for flags in [KEY_READ | KEY_WOW64_64KEY, KEY_READ | KEY_WOW64_32KEY] {
+                let path = "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\JianyingPro.exe";
+                if let Ok(key) = RegKey::predef(hive).open_subkey_with_flags(path, flags) {
+                    let raw: String = key.get_value("").unwrap_or_default();
+                    push_jianying_candidates(&mut candidates, &raw);
                 }
             }
         }
     }
+
+    // 便携版/未写注册表的安装：只查系统登记的 LocalAppData，不扫描盘符。
+    if let Ok(local) = std::env::var("LOCALAPPDATA") {
+        let base = Path::new(&local).join("JianyingPro");
+        push_jianying_candidates(&mut candidates, &base.to_string_lossy());
+    }
+
     candidates.iter().any(|path| path.exists())
+}
+
+fn push_jianying_candidates(candidates: &mut Vec<PathBuf>, raw: &str) {
+    let raw = raw.trim().trim_matches('"');
+    if raw.is_empty() {
+        return;
+    }
+    let path = Path::new(raw);
+    if path.is_file() {
+        candidates.push(path.to_path_buf());
+    }
+    let parent = if path.is_dir() {
+        Some(path)
+    } else {
+        path.parent()
+    };
+    if let Some(parent) = parent {
+        candidates.push(parent.join("JianyingPro.exe"));
+        for sub in ["Apps", "JianyingPro"] {
+            if let Ok(entries) = fs::read_dir(parent.join(sub)) {
+                for entry in entries.flatten() {
+                    let candidate = entry.path();
+                    if candidate.file_name().and_then(|n| n.to_str()) == Some("JianyingPro.exe") {
+                        candidates.push(candidate);
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod detection_tests {
+    #[test]
+    #[ignore]
+    fn detects_jianying_from_registry() {
+        assert!(super::jianying_exists(), "JianyingPro should be discovered from registry/App Paths");
+    }
 }

@@ -353,7 +353,7 @@ function soon() {
 
           <section class="panel about">
             <div class="panel-head"><b>关于</b><div class="panel-grow" /></div>
-            <div class="about-row"><span>版本</span><b>0.9.7 · P4</b></div>
+            <div class="about-row"><span>版本</span><b>0.9.8 · P4</b></div>
             <div class="about-row"><span>技术</span><b>Tauri 2 + Rust + Vue 3 + Naive UI</b></div>
             <div class="about-row"><span>设计</span><b>幕语 · Cinema Noir</b></div>
             <p class="settings-note">P4 范围：剪映草稿、素材复制、BGM 混音、ducking、淡入淡出、硬件编码探测。</p>
