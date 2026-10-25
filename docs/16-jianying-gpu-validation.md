@@ -1,6 +1,6 @@
 # 剪映 11.6 草稿与 GPU 编码验证
 
-版本：0.9.9
+版本：0.9.10
 日期：2026-10-25
 
 ---
@@ -61,7 +61,7 @@ enc=h264_amf
 
 验证：`export_jianying` 返回 `warnings: []`，不再误报“未检测到剪映”。
 
-### 实际草稿根目录（0.9.9 修复）
+### 实际草稿根目录（0.9.10 修复）
 
 剪映 11.6 的 `root_meta_info.json` 显示，真实草稿目录是：
 
@@ -71,7 +71,7 @@ D:/JianyingPro Drafts
 
 而 `%LOCALAPPDATA%\JianyingPro\User Data\Projects\com.lveditor.draft` 只是旧的/暂存目录。
 
-0.9.9 新增 `detect_jianying_root`：
+0.9.10 新增 `detect_jianying_root`：
 
 - 读取 `root_meta_info.json` 的 `all_draft_store[].draft_fold_path`
 - 取父目录，排除 `com.lveditor.draft`
@@ -114,7 +114,7 @@ audio: AAC，mean -27.4 dB / max -7.0 dB
 
 用自动化点击打开草稿后，剪映编辑器窗口出现过**空白白屏**；但官方引擎无头导出成功。
 
-已排除一个明确问题：之前草稿导出到了 `com.lveditor.draft`，不是 `D:/JianyingPro Drafts`。0.9.9 已自动检测并改用真实根目录。
+已排除一个明确问题：之前草稿导出到了 `com.lveditor.draft`，不是 `D:/JianyingPro Drafts`。0.9.10 已自动检测并改用真实根目录。
 
 仍需在正常人工双击路径下确认 GUI 是否显示时间线。自动化点击/窗口恢复本身不稳定，不能把白屏完全归因于草稿。
 
@@ -129,11 +129,11 @@ audio: AAC，mean -27.4 dB / max -7.0 dB
 - `muyu/src-tauri/src/render.rs`：AMF 探测尺寸修复。
 - `muyu/src-tauri/src/jianying.rs`：注册表/App Paths 检测、真实草稿根目录检测；忽略测试 `detects_jianying_from_registry` / `detects_configured_draft_root`。
 - `muyu/src/views/ExportView.vue`：自动使用检测到的草稿目录，可手动更改。
-- 0.9.9 已发布，含以上修复。
+- 0.9.10 已发布，含以上修复。
 
 ## 4. 边界
 
 - `jy-draftc` 依赖剪映自带的 `videoeditor.dll`，只作为验证工具，不进入 MuYu 安装包。
-- MuYu 当前仍生成 169.0.0 明文草稿，由剪映 11.6 自动迁移；0.9.9 已默认导出到真实根目录 `D:/JianyingPro Drafts`。
+- MuYu 当前仍生成 169.0.0 明文草稿，由剪映 11.6 自动迁移；0.9.10 已默认导出到真实根目录 `D:/JianyingPro Drafts`。
 - 若 GUI 白屏复现，需要增加官方加密/版本迁移步骤。
 - Authenticode 证书未提供，安装包仍为未签名。

@@ -1,6 +1,6 @@
 # 幕语 · 架构与项目结构
 
-版本：0.9.9 · P4（收尾）
+版本：0.9.10 · P4（收尾）
 日期：2026-10-25
 
 ---
@@ -174,7 +174,7 @@ audioPath / audioDuration
 
 - **identifier**：`com.muyu.studio`（反向域名）。
 - **productName**：`MuYu`（ASCII，安装包/可执行文件名）；窗口标题仍是「幕语 MuYu」。
-- **版本**：semver `0.9.9`。
+- **版本**：semver `0.9.10`。
 - **bundle**：publisher / copyright / category / shortDescription / longDescription 全部填写；Windows 目标为 NSIS。
 - **NSIS**：`installMode=currentUser`，简体中文 + English 双语安装器，`startMenuFolder=MuYu`，安装器图标使用 `icons/icon.ico`。
 - **托盘**：`TrayIconBuilder` 常驻；左键显示主窗口；菜单「显示主窗口 / 打开项目库 / 设置 / 退出 MuYu」。
@@ -189,7 +189,7 @@ audioPath / audioDuration
 
 实测：托盘创建成功；点 X 后进程仍在、窗口隐藏；再次启动只保留一个进程并重新显示窗口；生产 CSP 下首页/设置正常渲染；日志 `MuYu started` 已落盘。
 
-> 安装包文件名不再使用中文：`MuYu_0.9.9_x64-setup.exe`。
+> 安装包文件名不再使用中文：`MuYu_0.9.10_x64-setup.exe`。
 
 ## 10. 构建与发布
 
@@ -230,24 +230,25 @@ pnpm tauri build --bundles nsis
 
 - 剪映草稿已在 11.6 识别，官方引擎导出通过；GUI 编辑器显示仍需人工确认。
 - 硬件编码已验证 AMD AMF；NVENC/QSV 在本机不可用。
-- 队列不持久化、串行、共用设置。
+- 队列选择/参数已 localStorage 持久化；仍串行、共用设置、运行中任务不续跑。
 - 没有链接下载 / ASR / 本地克隆 TTS。
+- LLM 请求已 3 次重试；分镜按 45k 字幕窗口分段；剧情/文案仍受 60k 上下文截断。
 - 没有签名证书；安装包未签名。
 - FFmpeg 依赖系统 PATH。
 
 ## 13. 发布结果
 
-- **GitHub Release**：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.9`
-- **NSIS 安装包**：`muyu/release/MuYu_0.9.9_x64-setup.exe`（GitHub Actions 构建）
-  - 大小：4,710,274 B
-  - SHA256：`E7069E12B48F77EE0DD753FC158552D0B3B5AF456215CB8B1EF45AA2D0DB8191`
+- **GitHub Release**：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.10`
+- **NSIS 安装包**：`muyu/release/MuYu_0.9.10_x64-setup.exe`（GitHub Actions 构建）
+  - 大小：4,713,905 B
+  - SHA256：`44E85CBB190DB4D32104FE59E415E7DABA871139A8619E15019BC867503109B0`
   - Authenticode 未签名（本机无代码签名证书）
-- **updater 签名**：`MuYu_0.9.9_x64-setup.exe.sig`（minisign）
+- **updater 签名**：`MuYu_0.9.10_x64-setup.exe.sig`（minisign）
 - **更新清单**：`latest.json` 1,383 B，包含 `windows-x86_64` 与 `windows-x86_64-nsis`
-- **Portable exe**：`muyu/release/MuYu_0.9.9_portable.exe`
-  - 大小：9,123,840 B
+- **Portable exe**：`muyu/release/MuYu_0.9.10_portable.exe`
+  - 大小：9,128,960 B
 - 构建环境：NASM 2.16.03 + `CARGO_TARGET_DIR=C:\muyu-target`（规避 NASM 中文路径问题）
-- 安装包内 exe 版本：0.9.9
+- 安装包内 exe 版本：0.9.10
 
 ### 运行前置
 
