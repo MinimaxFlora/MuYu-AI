@@ -31,7 +31,7 @@
 
 ## 2. 代码签名
 
-当前安装包**未签名**。Windows 上会触发 SmartScreen “未知发布者”。
+当前安装包未做 **Authenticode** 代码签名；Windows 上会触发 SmartScreen “未知发布者”。updater 的 minisign 签名只保证更新包完整，不等于代码签名。
 
 正式签名需要：
 
@@ -41,26 +41,23 @@
    - `digestAlgorithm: "sha256"`
    - `timestampUrl`
 3. CI 中注入证书或使用云签名服务（Azure Trusted Signing / DigiCert）。
-4. 对 `MuYu.exe` 与 `MuYu_0.9.3_x64-setup.exe` 都签名。
+4. 对 `muyu.exe` 与 `MuYu_0.9.3_x64-setup.exe` 都签名。
 
 没有证书无法完成可信签名；不能用自签名冒充正式发布。
 
 ## 3. 自动更新
 
-Tauri updater 需要三样东西：
+已按 Clash Verge Rev 的方式接入：
 
-1. 更新签名密钥对（`tauri signer generate`）。
-2. 公钥写入 `tauri.conf.json` 的 updater pubkey。
-3. 可访问的更新 endpoint（静态 JSON + 安装包）。
+1. 本机已生成 minisign 密钥对：`src-tauri/updater.key`（私钥，已 ignore）/ `updater.key.pub`。
+2. 公钥写入 `tauri.conf.json` 的 `plugins.updater.pubkey`。
+3. GitHub Actions 在 `v*` tag 构建，`createUpdaterArtifacts` + `includeUpdaterJson` 生成 `.sig` 与 `latest.json`。
+4. 应用从 `https://github.com/MinimaxFlora/MuYu-AI/releases/latest/download/latest.json` 检查。
+5. 设置页可手动检查/下载/安装；启动 8 秒后自动检查并在右下角提示。
 
-当前没有更新服务器与签名密钥，**未开启 updater**，避免出现“检查更新必失败”的假功能。
+详见 `docs/15-updater.md`。
 
-后续建议：
-
-- endpoint：`https://update.muyu.studio/latest.json`
-- 产物：NSIS 安装包 + `.sig`
-- 渠道：stable / beta
-- 应用内“检查更新”与托盘提醒
+注意：updater 的 minisign 签名只保证更新包完整，**不替代** Windows Authenticode 代码签名。
 
 ## 4. 崩溃报告
 

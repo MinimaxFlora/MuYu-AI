@@ -2,8 +2,8 @@
 
 AI 影视解说工作台 · Tauri 2 + Rust + Vue 3 + Naive UI
 
-当前进度：**P4 进行中**（素材 → 剧情 → 文案 → 分镜 → 配音 → 成片 MP4 → 剪映草稿 + BGM）。
-剪映草稿已生成五轨（视频/原声/配音/字幕/BGM）并复制素材；本机未安装剪映，尚未做打开验证。BGM 支持闪避与淡入淡出，编码器支持硬件探测/回退，批量队列、系统托盘/单实例与 NSIS 安装包（未签名）已完成。
+当前进度：**P4 完成（Authenticode 未签名）**（素材 → 剧情 → 文案 → 分镜 → 配音 → 成片 MP4 → 剪映草稿 + BGM）。
+剪映草稿已生成五轨（视频/原声/配音/字幕/BGM）并复制素材；本机未安装剪映，尚未做打开验证。BGM 支持闪避与淡入淡出，编码器支持硬件探测/回退，批量队列、系统托盘/单实例、日志、开机自启、GitHub updater 与 NSIS 安装包（Authenticode 未签名）已完成。
 
 ---
 
@@ -122,7 +122,8 @@ muyu/
 
 ## 发布
 
-- `release/MuYu_0.9.3_x64-setup.exe`：NSIS 安装包（Authenticode 未签名）`n- `release/MuYu_0.9.3_x64-setup.exe.sig`：updater minisign 签名
+- `release/MuYu_0.9.3_x64-setup.exe`：NSIS 安装包（Authenticode 未签名）
+- `release/MuYu_0.9.3_x64-setup.exe.sig`：updater minisign 签名
 - `release/MuYu_0.9.3_portable.exe`：免安装 exe
 
 安装包不携带 FFmpeg；目标机需要 FFmpeg/FFprobe 在 PATH。

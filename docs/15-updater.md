@@ -81,11 +81,21 @@ MuYu_0.9.3_x64-setup.exe.sig
 latest.json
 ```
 
+### 3.1 已发布（2026-10-25）
+
+- Release：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.3`
+- Actions run `40190704450`：成功。
+- 资产：
+  - `MuYu_0.9.3_x64-setup.exe` 4,699,436 B
+  - `.sig` 432 B
+  - `latest.json` 1,383 B
+- `latest.json` 已验证包含 `windows-x86_64` 和 `windows-x86_64-nsis`，两项都有签名与 GitHub 下载地址。
+
 ## 4. 首次配置
 
 1. 把仓库推到 GitHub，默认分支 `main`。
 2. 在 GitHub Actions secrets 添加签名私钥。
-3. 在应用设置里填 `MinimaxFlora/MuYu-AI`，例如 `MinimaxFlora/MuYu-AI`。
+3. 在应用设置里填更新仓库 `MinimaxFlora/MuYu-AI`（默认已填）。
 4. 打 tag：
 
 ```bash
@@ -98,7 +108,7 @@ git push origin v0.9.3
 
 ## 5. 限制
 
-- 当前没有真实 GitHub 仓库/Release，**未做端到端下载安装回归**；已验证编译、签名构建配置与检查逻辑。
+- 已发布 0.9.3，但还没有用 0.9.2 客户端做一次真实的“检查 → 下载 → 安装 → 重启”升级回归；当前应用版本与最新版相同，检查会返回“已是新版本”。
 - 私钥丢失后无法签发后续更新，必须备份。
 - `latest.json` 依赖 GitHub `latest`，预发布版本不会被 `latest` 选中。
 - 未接入 Clash 那样的镜像代理与静默后台缓存；当前是手动确认 + 自动检查提醒。

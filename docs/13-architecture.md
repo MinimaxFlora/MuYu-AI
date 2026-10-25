@@ -237,10 +237,13 @@ pnpm tauri build --bundles nsis
 
 ## 13. 发布结果
 
-- **NSIS 安装包**：`muyu/release/MuYu_0.9.3_x64-setup.exe`
-  - 大小：4,702,222 B
-  - SHA256：`76B86EEAF25ABD6BE2ADF15466FEE0644DB5CFB0456F01938ED009E03A6988AF`
-  - 未签名（本机无代码签名证书）
+- **GitHub Release**：`https://github.com/MinimaxFlora/MuYu-AI/releases/tag/v0.9.3`
+- **NSIS 安装包**：`muyu/release/MuYu_0.9.3_x64-setup.exe`（GitHub Actions 构建）
+  - 大小：4,699,436 B
+  - SHA256：`E0EA292CDAC6CDF8589454B29C2D6FB303C674B0A5829609E2D97A50ADF6F79B`
+  - Authenticode 未签名（本机无代码签名证书）
+- **updater 签名**：`MuYu_0.9.3_x64-setup.exe.sig`（minisign）
+- **更新清单**：`latest.json` 1,383 B，包含 `windows-x86_64` 与 `windows-x86_64-nsis`
 - **Portable exe**：`muyu/release/MuYu_0.9.3_portable.exe`
   - 大小：9,143,296 B
 - 构建环境：NASM 2.16.03 + `CARGO_TARGET_DIR=C:\muyu-target`（规避 NASM 中文路径问题）
