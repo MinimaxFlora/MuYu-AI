@@ -1061,9 +1061,7 @@ pub fn export_draft(project: &Project, root: &str, name: Option<String>) -> Resu
     root_meta["root_path"] = json!(root.to_string());
     write_json(&root_meta_path, &root_meta)?;
 
-    if !Path::new("C:/Program Files/JianyingPro/JianyingPro.exe").exists()
-        && !dirs_jianying_exists()
-    {
+    if !jianying_exists() {
         warnings.push("未检测到本机安装剪映；草稿按 10.6.0 / 169.0.0 结构生成，请用剪映打开验证".into());
     }
 
@@ -1082,19 +1080,25 @@ pub fn export_draft(project: &Project, root: &str, name: Option<String>) -> Resu
     })
 }
 
-fn dirs_jianying_exists() -> bool {
-    let Ok(base) = std::env::var("LOCALAPPDATA") else {
-        return false;
-    };
-    let base = Path::new(&base).join("JianyingPro");
-    if base.join("JianyingPro.exe").exists() {
-        return true;
+fn jianying_exists() -> bool {
+    let mut candidates = vec![
+        PathBuf::from("C:/Program Files/JianyingPro/JianyingPro.exe"),
+        PathBuf::from("C:/Program Files (x86)/JianyingPro/JianyingPro.exe"),
+        PathBuf::from("C:/JianyingPro/JianyingPro.exe"),
+        PathBuf::from("D:/JianyingPro/JianyingPro.exe"),
+        PathBuf::from("E:/JianyingPro/JianyingPro.exe"),
+    ];
+    if let Ok(local) = std::env::var("LOCALAPPDATA") {
+        let base = Path::new(&local).join("JianyingPro");
+        candidates.push(base.join("JianyingPro.exe"));
+        if let Ok(entries) = fs::read_dir(base.join("Apps")) {
+            for entry in entries.flatten() {
+                let path = entry.path();
+                if path.extension().map(|ext| ext.eq_ignore_ascii_case("exe")).unwrap_or(false) {
+                    candidates.push(path);
+                }
+            }
+        }
     }
-    fs::read_dir(base.join("Apps"))
-        .map(|entries| {
-            entries.flatten().any(|entry| {
-                entry.path().extension().map(|ext| ext.eq_ignore_ascii_case("exe")).unwrap_or(false)
-            })
-        })
-        .unwrap_or(false)
+    candidates.iter().any(|path| path.exists())
 }

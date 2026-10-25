@@ -91,7 +91,7 @@ fn encoder_works(encoder: &str) -> bool {
             "-f",
             "lavfi",
             "-i",
-            "color=c=black:s=64x64:d=0.2",
+            "color=c=black:s=320x240:d=1",
             "-frames:v",
             "1",
             "-c:v",

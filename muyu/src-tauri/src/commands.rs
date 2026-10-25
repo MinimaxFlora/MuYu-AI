@@ -985,7 +985,9 @@ mod tests {
             "rendered={} size={} duration={} subs={} enc={} note={:?}",
             result.path, result.size, result.duration, result.subtitle_burned, result.encoder, result.note
         );
-        let _ = std::fs::remove_dir_all(base);
+        if std::env::var("MUYU_KEEP_RENDER").is_err() {
+            let _ = std::fs::remove_dir_all(base);
+        }
     }
     #[tokio::test]
     async fn demo_pipeline_generates_items() {
